@@ -80,31 +80,68 @@ existsWidth(int width)
 }
 
 int
-lastIsNegative(long last)
+isNegative(long num)
 {
-	return last < 0;
+	return num < 0;
 }
 
 int
-lastIsNotZero(long last)
+isNotZero(long num)
 {
-	return last != 0;
+	return num != 0;
+}
+
+int
+firstIsBiggerOrEqualThenSecond(long first, long second)
+{
+	return first >= second;
 }
 
 void
-calculateWidth(long last, int *width)
+calculateWidth(long first, long last, int *width)
 {
+
+	long maxValue = 0;
+	long firstAbs = 0;
+	long lastAbs = 0;
 	int count = 0;
 
-	if (lastIsNegative(last)) {
-		count++;
-		last = -last;
+	if (isNegative(first)) {
+		firstAbs = -first;
+	} else {
+		firstAbs = first;
 	}
-	while (lastIsNotZero(last)) {
-		last /= 10;
-		count++;
+
+	if (isNegative(last)) {
+		lastAbs = -last;
+	} else {
+		lastAbs = last;
 	}
+
+	if (firstIsBiggerOrEqualThenSecond(firstAbs, lastAbs)) {
+		maxValue = firstAbs;
+	} else {
+		maxValue = lastAbs;
+	}
+
+	if ((isNegative(first) || isNegative(last))) {
+
+		if (isNegative(first)
+		    && firstIsBiggerOrEqualThenSecond(firstAbs, lastAbs)) {
+			count++;
+		} else if (isNegative(last)
+			   && firstIsBiggerOrEqualThenSecond(lastAbs, firstAbs)) {
+			count++;
+		}
+	}
+
+	do {
+		maxValue /= 10;
+		count++;
+	} while (isNotZero(maxValue));
+
 	*width = count;
+
 }
 
 int
@@ -188,7 +225,7 @@ main(int argc, char **argv)
 	}
 
 	if (existsWidth(width)) {
-		calculateWidth(last, &width);
+		calculateWidth(first, last, &width);
 	}
 
 	myseq(first, increment, last, width);
