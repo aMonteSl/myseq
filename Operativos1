@@ -5,3 +5,42 @@ Para cuando los pasen en hexa
 Tambien se pueden pasar en hexa
 
 Trabajar con longs
+
+
+
+
+
+[200~char exit_status;
+    int i;
+
+    for (i = 0; i < argc; i++){
+        switch (argc){
+            case 1:
+                convertToLong(last, argv[i], &exit_status);
+                break;
+            case 2:
+                if (i == 0) {
+                    convertToLong(first, argv[i], &exit_status);
+                } else {
+                    convertToLong(last, argv[i], &exit_status);
+                }
+                break;
+            case 3:
+                if (i == 0) {
+                    convertToLong(first, argv[i], &exit_status);
+                } else if (i == 1) {
+                    convertToLong(increment, argv[i], &exit_status);
+                } else {
+                    convertToLong(last, argv[i], &exit_status);
+                }
+                break;
+            default:
+                fprintf(stderr, "myseq: too many operands\n");
+                exit(EXIT_FAILURE);
+        }
+
+        if (exit_status != '\0'){
+            fprintf(stderr, "myseq: strtol failed, argv not a number\n");
+            fail = -1;
+        }
+    }
